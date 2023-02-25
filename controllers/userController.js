@@ -35,7 +35,7 @@ module.exports = {
             { runValidators: true, new: true }
         )
         .then((user) => {
-            if (!course) {
+            if (!user) {
                 res.status(404).json({ message: "No user with that ID "});
             }
             else {
