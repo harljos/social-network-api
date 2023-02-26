@@ -28,8 +28,8 @@ module.exports = {
         )
         .then(async (thought) => {
             await User.findOneAndUpdate(
-                { _id: req.body.usderId},
-                { $push: req.body.thoughtText},
+                { _id: req.body.userId},
+                { $push: { thoughts: thought._id}},
                 { runValidators: true, new: true }
             )
             res.status(200).json(thought);
@@ -63,5 +63,37 @@ module.exports = {
             })
             .then(() => res.status(200).json({ message: "Thought has been deleted" }))
             .catch((err) => res.status(500).json(err));
+    },
+    // creates reaction
+    createReaction (req, res) {
+        Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $push: { reactions: {
+                reactionBody: req.body.reactionBody,
+                username: req.body.username
+            }}}
+        )
+        .then((thought) => {
+            if (!thought) {
+                res.status(404).json({ message : "No thought with that ID"});
+            }
+        })
+        .then(() => res.status(200).json({ message: "reaction added"}))
+        .catch((err) => res.status(500).json(err));
+    },
+    // Deletes reaction
+    deleteReaction (req, res) {
+        Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId},
+            { $pull: { reactions: req.body.reactionId }},
+            { new: true }
+        )
+        .then((thought) => {
+            if (!thought) {
+                res.status(404).json({ message: "No thought with that ID "});
+            }
+        })
+        .then(() => res.status(200).json({ message: "reaction removed" }))
+        .catch((err) => res.status(500).json(err));
     }
 };

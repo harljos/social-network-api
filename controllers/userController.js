@@ -58,8 +58,8 @@ module.exports = {
     // Adds a new friend to a user's friend list
     addFriend (req, res) {
         User.findOneAndUpdate(
-            { _id: req.body.userId},
-            { $push: { friends: req.body.friendId}},
+            { _id: req.params.userId},
+            { $push: { friends: req.params.friendId}},
             { new: true }
         )
         .then((user) => {
@@ -73,8 +73,8 @@ module.exports = {
     // Deletes friend from user's friend list
     deleteFriend (req, res) {
         User.findOneAndUpdate(
-            { _id: req.body.userId},
-            { $pull: { friends: req.body.friendId}},
+            { _id: req.params.userId},
+            { $pull: { friends: req.params.friendId}},
             { new: true }
         )
         .then((user) => {
