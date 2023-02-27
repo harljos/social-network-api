@@ -10,7 +10,7 @@ const thoughtSchema = new Schema(
         createdAt: {
             type: Date,
             default: Date.now,
-            get: `${Date.prototype.getMonth()}, ${Date.prototype.getDay()}, ${Date.prototype.getFullYear()}`
+            // get: `${Date.prototype.getMonth()}, ${Date.prototype.getDay()}, ${Date.prototype.getFullYear()}`
         },
         username: {
             type: String,
