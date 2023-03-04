@@ -10,6 +10,10 @@ module.exports = {
     // Gets a single user by id
     getSingleUser (req, res) {
         User.findOne({ _id: req.params.userId })
+            .populate("thoughts", "friends").populate({
+                path: "thoughts",
+                populate: "thoughtText"
+            })
             .select("-__v")
             .then((user) => {
                 if (!user) {

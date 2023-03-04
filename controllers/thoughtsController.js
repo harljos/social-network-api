@@ -23,14 +23,13 @@ module.exports = {
     // Creates a new thought
     createThought (req, res) {
         Thought.create(
-            { thoughtText: req.body.thoughtText },
-            { username: req.body.username }
+            { thoughtText: req.body.thoughtText, username: req.body.username },
         )
         .then(async (thought) => {
             await User.findOneAndUpdate(
                 { _id: req.body.userId},
                 { $push: { thoughts: thought._id}},
-                { runValidators: true, new: true }
+                { new: true }
             )
             res.status(200).json(thought);
         })
