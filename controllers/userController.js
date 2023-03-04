@@ -10,10 +10,11 @@ module.exports = {
     // Gets a single user by id
     getSingleUser (req, res) {
         User.findOne({ _id: req.params.userId })
-            .populate("thoughts", "friends").populate({
+            .populate("thoughts").populate({
                 path: "thoughts",
                 populate: "thoughtText"
             })
+            .populate("friends")
             .select("-__v")
             .then((user) => {
                 if (!user) {
@@ -78,7 +79,7 @@ module.exports = {
     deleteFriend (req, res) {
         User.findOneAndUpdate(
             { _id: req.params.userId},
-            { $pull: { friends: req.params.friendId}},
+            { $pullAll: { friends: [{ _id: req.params.friendId }]}},
             { new: true }
         )
         .then((user) => {
