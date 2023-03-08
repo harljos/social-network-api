@@ -19,7 +19,7 @@ const reactionSchema = new Schema(
         createdAt: {
             type: Date,
             default: Date.now,
-            // get: `${Date.prototype.getMonth()}, ${Date.prototype.getDay()}, ${Date.prototype.getFullYear()}`
+            get: (timestamp) => dateFormat(timestamp)
         }
     }
 );
